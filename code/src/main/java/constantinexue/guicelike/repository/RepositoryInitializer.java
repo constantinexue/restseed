@@ -34,10 +34,12 @@ public class RepositoryInitializer {
     
     @Inject
     public void initialize() throws Exception {
+        // 初始化数据库，建表
         Connection connection = DriverManager.getConnection(connectionUrl);
         executeSqlScript(connection, new File("./conf/create.sql"));
         connection.close();
         
+        // 创建一些测试用户
         for (int i = 0; i < 10; i++) {
             UserEntity user = new UserEntity();
             user.setId(IDUtils.generate())

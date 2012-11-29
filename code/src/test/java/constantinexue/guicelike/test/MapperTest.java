@@ -8,7 +8,7 @@ import org.modelmapper.config.Configuration.AccessLevel;
 import constantinexue.guicelike.model.UserModel;
 import constantinexue.guicelike.object.UserObject;
 
-public class MapperTest {
+public class MapperTest extends Assert {
     
     @Test
     public void mapUser() {
@@ -21,7 +21,7 @@ public class MapperTest {
         
         UserObject userObject = modelMapper.map(userModel, UserObject.class);
         
-        Assert.assertEquals(userModel.getId(), userObject.id);
-        Assert.assertEquals(userModel.getName(), userObject.name);
+        assertEquals(userModel.getId(), userObject.id);
+        assertEquals(userModel.getName(), userObject.name);
     }
 }
