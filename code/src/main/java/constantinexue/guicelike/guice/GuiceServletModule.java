@@ -6,6 +6,7 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 import constantinexue.guicelike.repository.RepositoryInitializer;
 import constantinexue.guicelike.resource.UserResource;
+import constantinexue.guicelike.resource.support.ObjectMapProvider;
 import constantinexue.guicelike.util.Configuration;
 
 public class GuiceServletModule extends ServletModule {
@@ -22,7 +23,7 @@ public class GuiceServletModule extends ServletModule {
         // bind(Mediator.class).asEagerSingleton();
         // bind(ApplicationExceptionMapper.class);
         // bind(Recorder.class).to(SimpleRecorder.class).asEagerSingleton();
-        // bind(ValueObjectProvider.class).asEagerSingleton();
+        bind(ObjectMapProvider.class).asEagerSingleton();
         bind(UserResource.class).asEagerSingleton();
         bind(RepositoryInitializer.class).asEagerSingleton();
         

@@ -9,8 +9,13 @@ public class UserModel {
     private UserEntity entity;
     
     public UserModel() {
-        id = IDUtils.generate();
-        entity = new UserEntity();
+        this.id = IDUtils.generate();
+        this.entity = new UserEntity();
+    }
+    
+    public UserModel(UserEntity userEntity) {
+        this.id = userEntity.getId();
+        this.entity = userEntity;
     }
     
     public String getId() {

@@ -86,7 +86,7 @@ public class Launcher {
         }
         
         System.out.println("Started, the server is running on http://localhost:" + HTTP_PORT);
-        // 如果不join，主线程结束也不会引起程序退出。
+        // 如果不join，主线程结束也不会引起程序退出。但这样做最好。
         try {
             jettyServer.join();
         }

@@ -1,6 +1,6 @@
 package constantinexue.guicelike.object;
 
-public class UserObject {
+public class UserObject implements ValueObject {
     
     public String id;
     public String name;

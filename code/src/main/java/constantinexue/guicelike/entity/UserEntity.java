@@ -3,8 +3,10 @@ package constantinexue.guicelike.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "user")
 public class UserEntity {
     
     @Id
