@@ -1,6 +1,6 @@
-# 什么是GuiceLike #
+# 什么是RestSeed #
 
-GuiceLike是一个RESTful风格的完整的示例项目，以[Guice](https://code.google.com/p/google-guice/), [Jetty](http://www.eclipse.org/jetty/), [Jersey](http://jersey.java.net/), JPA为基础。
+RestSeed是一个RESTful风格的完整的示例项目，以[Guice](https://code.google.com/p/google-guice/), [Jetty](http://www.eclipse.org/jetty/), [Jersey](http://jersey.java.net/), JPA为基础。
 包括HTTP层，逻辑层DomainModel，数据层Entity和Repository，以及模型对象映射等内容。
 
 # 为什么是Guice，而不是Spring #
