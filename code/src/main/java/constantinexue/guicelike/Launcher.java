@@ -20,14 +20,14 @@ import constantinexue.guicelike.util.Configuration;
 
 public class Launcher {
     
+    private static final String START_COMMAND = "start";
+    private static final String STOP_COMMAND = "stop";
+    private static final int HTTP_PORT = 8080;
+    private static final int STOP_PORT = 8081;
+    
     // Logger.getLogger获得的是弱引用，如果不保存，设置就没有效果。
     private static java.util.logging.Logger jerseyLogger;
     
-    private static final String START_COMMAND = "start";
-    private static final String STOP_COMMAND = "stop";
-    
-    private static final int HTTP_PORT = 8080;
-    private static final int STOP_PORT = 8081;
     private static Server jettyServer;
     
     public static void main(String[] args) {
