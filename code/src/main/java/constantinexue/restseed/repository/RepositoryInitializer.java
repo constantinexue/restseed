@@ -40,12 +40,12 @@ public class RepositoryInitializer {
         connection.close();
         
         // 创建一些测试用户
-        for (int i = 0; i < 10; i++) {
-            UserEntity user = new UserEntity();
-            user.setId(IDUtils.generate())
-                .setName("User" + i);
-            userRepository.persist(user);
-        }
+        // for (int i = 0; i < 10; i++) {
+        // UserEntity user = new UserEntity();
+        // user.setId(IDUtils.generate())
+        // .setName("User" + i);
+        // userRepository.persist(user);
+        // }
     }
     
     /**

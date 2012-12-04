@@ -13,8 +13,11 @@ public class UserEntity {
     @Column(name = "id")
     private String id;
     
-    @Column(name = "name")
+    @Column(name = "username")
     private String name;
+    
+    @Column(name = "password")
+    private String password;
     
     public String getId() {
         return id;
@@ -31,6 +34,15 @@ public class UserEntity {
     
     public UserEntity setName(String name) {
         this.name = name;
+        return this;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public UserEntity setPassword(String password) {
+        this.password = password;
         return this;
     }
     
