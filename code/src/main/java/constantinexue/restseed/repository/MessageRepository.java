@@ -6,4 +6,8 @@ import constantinexue.restseed.entity.MessageEntity;
 
 @Singleton
 public class MessageRepository extends AbstractRepository<MessageEntity> {
+
+    public MessageRepository() {
+        super(MessageEntity.class);
+    }
 }

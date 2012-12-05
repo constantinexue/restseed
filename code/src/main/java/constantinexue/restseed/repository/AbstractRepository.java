@@ -8,24 +8,44 @@ import javax.persistence.criteria.CriteriaQuery;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 
-public abstract class AbstractRepository<T> {
+import constantinexue.restseed.entity.PersistanceEntity;
+
+public abstract class AbstractRepository<T extends PersistanceEntity> {
     
     @Inject
     private EntityManager entityManager;
+    
+    private Class<T> entityClass;
+    
+    protected AbstractRepository(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
     
     protected EntityManager entityManager() {
         return entityManager;
     }
     
     @Transactional
-    public T persist(T entity) {
+    public void create(T entity) {
         entityManager.persist(entity);
-        entity = entityManager.merge(entity);
-        
-        return entity;
     }
     
-    protected List<T> getResultList(CriteriaQuery<T> query) {
+    @Transactional
+    public T update(T entity) {
+        return entityManager.merge(entity);
+    }
+    
+    @Transactional
+    public void delete(T entity) {
+        entityManager.remove(entity);
+    }
+    
+    @Transactional
+    public T fetch(String id){
+        return entityManager.find(entityClass, id);
+    }
+    
+    protected List<T> fetchResultList(CriteriaQuery<T> query) {
         List<T> entities = entityManager.createQuery(query)
                                         .getResultList();
         

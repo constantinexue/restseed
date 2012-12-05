@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "message")
-public class MessageEntity {
+public class MessageEntity extends PersistanceEntity {
     
     @Id
     @Column(name = "id")
@@ -21,6 +21,7 @@ public class MessageEntity {
     @Column(name = "created")
     private Date createdAt;
     
+    @Override
     public String getId() {
         return id;
     }

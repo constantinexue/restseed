@@ -30,11 +30,11 @@ public class UserModel {
     }
     
     public String getName() {
-        return entity.getName();
+        return entity.getUsername();
     }
     
     public UserModel setName(String name) {
-        entity.setName(name);
+        entity.setUsername(name);
         return this;
     }
     
@@ -46,7 +46,10 @@ public class UserModel {
     
     public UserModel save(ApplicationContext context) {
         if (isNew) {
-            entity = context.getUserRepository().persist(entity);
+            // 设置创建时间
+            entity.setCreatedAt(context.timeService().getNowDateTime().toDate());
+            context.userRepository().create(entity);
+            entity = context.userRepository().fetch(id);
             isNew = false;
         }
         else {

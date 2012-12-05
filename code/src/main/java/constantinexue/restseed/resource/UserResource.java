@@ -17,7 +17,7 @@ public class UserResource extends AbstractResource {
     @GET
     public List<UserObject> allUsers(){
         AllUsersModel allUsers = new AllUsersModel();
-        allUsers.load(getApplicationContext().getUserRepository());
+        allUsers.load(getApplicationContext().userRepository());
         
         return mapList(allUsers, UserObject.class);
     }

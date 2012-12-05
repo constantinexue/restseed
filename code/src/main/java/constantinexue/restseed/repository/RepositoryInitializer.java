@@ -13,8 +13,6 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.PersistService;
 
-import constantinexue.restseed.entity.UserEntity;
-import constantinexue.restseed.util.IDUtils;
 import constantinexue.restseed.util.PropertiesNames;
 
 @Singleton
@@ -24,8 +22,8 @@ public class RepositoryInitializer {
     @Inject
     private String connectionUrl;
     
-    @Inject
-    private UserRepository userRepository;
+    // @Inject
+    // private UserRepository userRepository;
     
     @Inject
     public RepositoryInitializer(PersistService service) {

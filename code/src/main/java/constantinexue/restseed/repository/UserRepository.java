@@ -14,6 +14,10 @@ import constantinexue.restseed.entity.UserEntity;
 @Singleton
 public class UserRepository extends AbstractRepository<UserEntity> {
     
+    public UserRepository() {
+        super(UserEntity.class);
+    }
+
     @Transactional()
     public List<UserEntity> findAll() {
         CriteriaBuilder builder = entityManager().getCriteriaBuilder();
@@ -22,6 +26,6 @@ public class UserRepository extends AbstractRepository<UserEntity> {
         
         query.select(root);
         
-        return getResultList(query);
+        return fetchResultList(query);
     }
 }

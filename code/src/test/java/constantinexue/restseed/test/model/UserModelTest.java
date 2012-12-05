@@ -19,11 +19,11 @@ public class UserModelTest extends AbstractTest {
     @Before
     public void mock() {
         applicationContext = Mockito.mock(ApplicationContext.class);
-        Mockito.when(applicationContext.getUserRepository()).thenReturn(Mockito.mock(UserRepository.class));
+        Mockito.when(applicationContext.userRepository()).thenReturn(Mockito.mock(UserRepository.class));
     }
     
     @Test
-    public void createUser() {
+    public void create() {
         UserModel user = new UserModel();
         user.setName("xk")
             .setPassword("Abc123")
