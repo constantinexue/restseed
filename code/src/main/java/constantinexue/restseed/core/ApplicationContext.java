@@ -7,17 +7,27 @@ import constantinexue.restseed.service.TimeService;
 
 public class ApplicationContext {
     
-    @Inject
     private UserRepository userRepository;
     
-    @Inject
     private TimeService timeService;
     
-    public UserRepository userRepository() {
+    public UserRepository getUserRepository() {
         return userRepository;
     }
     
-    public TimeService timeService() {
+    @Inject
+    public ApplicationContext setUserRepository(UserRepository bean) {
+        userRepository = bean;
+        return this;
+    }
+    
+    public TimeService getTimeService() {
         return timeService;
+    }
+    
+    @Inject
+    public ApplicationContext setTimeService(TimeService bean) {
+        timeService = bean;
+        return this;
     }
 }

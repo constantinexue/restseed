@@ -12,7 +12,7 @@ public abstract class AbstractTest extends Assert {
     
     private static Injector injector;
     
-    static{
+    static {
         try {
             Configuration.loadLog4j("./conf/log4j.xml");
             Configuration.loadProperties("./conf/application.properties");
