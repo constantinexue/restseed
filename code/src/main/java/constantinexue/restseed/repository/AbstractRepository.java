@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 
 import constantinexue.restseed.entity.PersistanceEntity;
@@ -13,7 +14,7 @@ import constantinexue.restseed.entity.PersistanceEntity;
 public abstract class AbstractRepository<T extends PersistanceEntity> {
     
     @Inject
-    private EntityManager entityManager;
+    private Provider<EntityManager> entityManagerProvider;
     
     private Class<T> entityClass;
     
@@ -22,32 +23,33 @@ public abstract class AbstractRepository<T extends PersistanceEntity> {
     }
     
     protected EntityManager entityManager() {
-        return entityManager;
+        return entityManagerProvider.get();
     }
     
     @Transactional
     public void create(T entity) {
-        entityManager.persist(entity);
+        entityManager().persist(entity);
     }
     
     @Transactional
     public T update(T entity) {
-        return entityManager.merge(entity);
+        return entityManager().merge(entity);
     }
     
     @Transactional
     public void delete(T entity) {
-        entityManager.remove(entity);
+        entity = fetch(entity.getId());
+        entityManager().remove(entity);
     }
     
     @Transactional
-    public T fetch(String id){
-        return entityManager.find(entityClass, id);
+    public T fetch(String id) {
+        return entityManager().find(entityClass, id);
     }
     
     protected List<T> fetchResultList(CriteriaQuery<T> query) {
-        List<T> entities = entityManager.createQuery(query)
-                                        .getResultList();
+        List<T> entities = entityManager().createQuery(query)
+                                          .getResultList();
         
         return entities;
     }

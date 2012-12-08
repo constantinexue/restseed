@@ -2,6 +2,8 @@ package constantinexue.restseed.test.repository;
 
 import java.util.Date;
 
+import javax.persistence.PersistenceException;
+
 import org.junit.Test;
 
 import com.google.inject.Inject;
@@ -28,8 +30,13 @@ public class UserRepositoryTest extends AbstractTest {
     public void createDuplicate() {
         UserEntity user = createRandomUser();
         userRepository.create(user);
-        // 惊奇！为什么这里没有抛出EntityExistsException
-        userRepository.create(user);
+        try {
+            userRepository.create(user);
+            fail();
+        }
+        catch (PersistenceException e) {
+            // 这里的e.getCause()很奇怪
+        }
     }
     
     @Test

@@ -44,7 +44,7 @@ public class UserModelTest extends AbstractTest {
     @Test
     public void update() {
         UserModel actual = createRandomUser();
-        actual.setUsername("changed")
+        actual.setUsername("changed" + actual.getUsername())
               .save(applicationContext);
         UserModel expected = new UserModel(actual.getId());
         expected.load(applicationContext);

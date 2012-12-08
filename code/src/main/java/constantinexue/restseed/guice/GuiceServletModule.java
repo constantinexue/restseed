@@ -23,6 +23,8 @@ public class GuiceServletModule extends ServletModule {
         install(createJpaPersistModule());
         
         Names.bindProperties(binder(), Configuration.getProperties());
+        // 把初始化助手类放在第一个初始化，可以避免EntityManager无法注入的问题。
+        bind(RepositoryInitializer.class).asEagerSingleton();
         // bind(GPUEventBus.class).asEagerSingleton();
         // bind(CPUEventBus.class).asEagerSingleton();
         // bind(FileManager.class).to(GuavaFileManager.class);
@@ -31,7 +33,6 @@ public class GuiceServletModule extends ServletModule {
         // bind(Recorder.class).to(SimpleRecorder.class).asEagerSingleton();
         bind(ObjectMapProvider.class).asEagerSingleton();
         bind(UserResource.class).asEagerSingleton();
-        bind(RepositoryInitializer.class).asEagerSingleton();
         
         serve("/*").with(GuiceContainer.class);
     }
