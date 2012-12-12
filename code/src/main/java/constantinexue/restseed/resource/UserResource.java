@@ -13,9 +13,13 @@ import constantinexue.restseed.object.UserObject;
 @Singleton
 @Path("/users")
 public class UserResource extends AbstractResource {
-
+    
+    public UserResource() {
+        super();
+    }
+    
     @GET
-    public List<UserObject> allUsers(){
+    public List<UserObject> allUsers() {
         AllUsersModel allUsers = new AllUsersModel();
         allUsers.load(getApplicationContext().getUserRepository());
         

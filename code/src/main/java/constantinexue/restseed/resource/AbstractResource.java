@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import constantinexue.restseed.core.ApplicationContext;
+import constantinexue.restseed.util.DebugLogger;
 
 public abstract class AbstractResource {
     
@@ -18,6 +19,7 @@ public abstract class AbstractResource {
     private ModelMapper modelMapper;
     
     protected AbstractResource() {
+        DebugLogger.logClassCreated(this.getClass());
     }
     
     @Inject

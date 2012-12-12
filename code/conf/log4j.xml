@@ -11,7 +11,7 @@
 			<param name="ConversionPattern" value="%-5p %d{HH:mm:ss} %l %m%n" />
 		</layout>
 	</appender>
-	<logger name="constantinexue.guicelike" additivity="false">
+	<logger name="constantinexue.restseed" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="self" />
 	</logger>

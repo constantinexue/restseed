@@ -10,6 +10,7 @@ import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 
 import constantinexue.restseed.entity.PersistanceEntity;
+import constantinexue.restseed.util.DebugLogger;
 
 public abstract class AbstractRepository<T extends PersistanceEntity> {
     
@@ -20,6 +21,7 @@ public abstract class AbstractRepository<T extends PersistanceEntity> {
     
     protected AbstractRepository(Class<T> entityClass) {
         this.entityClass = entityClass;
+        DebugLogger.logClassCreated(this.getClass());
     }
     
     protected EntityManager entityManager() {
