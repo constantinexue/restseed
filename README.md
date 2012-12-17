@@ -25,12 +25,12 @@ RestSeed是一个RESTful风格的完整的示例项目，以[Guice](https://code
 - Joda:
 [joda-time](http://joda-time.sourceforge.net/)
 - JPA:
-[Hibernate](http://www.hibernate.org/) /
+[hibernate](http://www.hibernate.org/) /
 [guice-persist](https://code.google.com/p/google-guice/wiki/GuicePersist/)
 - LOG:
 [slf4j](http://www.slf4j.org/) /
 [log4j](http://logging.apache.org/log4j/1.2/)
 - Other:
-[ModelMapper](http://modelmapper.org/) /
+[ModelMapper](http://modelmapper.org/) / [Reflections](https://code.google.com/p/reflections/)
 - Test:
 [JUnit](http://www.junit.org/)
