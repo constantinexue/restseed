@@ -49,7 +49,7 @@ public class UserRepositoryTest extends AbstractTest {
     
     @Test
     public void fetchNotExisted() {
-        UserEntity user = userRepository.fetch("abcd");
+        UserEntity user = userRepository.fetch(IDUtils.generate());
         assertNull(user);
     }
     
@@ -57,7 +57,7 @@ public class UserRepositoryTest extends AbstractTest {
     public void update() {
         UserEntity expected = createRandomUser();
         userRepository.create(expected);
-        expected.setUsername("changed");
+        expected.setUsername("changed" + expected.getUsername());
         UserEntity actual = userRepository.update(expected);
         assertEquals(expected, actual);
     }

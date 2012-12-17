@@ -36,7 +36,7 @@ public class Launcher {
             command = args[0].toLowerCase();
         }
         else {
-            command = "start";
+            command = START_COMMAND;
         }
         if (command.equals(START_COMMAND)) {
             executeStartCommand();
