@@ -1,14 +1,14 @@
-# 什么是RestSeed #
+# What's RestSeed? #
 
-RestSeed是一个RESTful风格的完整的示例项目，以[Guice](https://code.google.com/p/google-guice/), [Jetty](http://www.eclipse.org/jetty/), [Jersey](http://jersey.java.net/), JPA为基础。
-包括HTTP层，逻辑层DomainModel，数据层Entity和Repository，以及模型对象映射等内容。
+RestSeed is a RESTful complete seed project based on [Guice](https://code.google.com/p/google-guice/), [Jetty](http://www.eclipse.org/jetty/), [Jersey](http://jersey.java.net/) and JPA.
+It includes HTTP layer, domain models, entities and repositories, and mappers.
 
-# 为什么是Guice，而不是Spring #
+# What's the reason I chose Guice, not Spring? #
 
-- Spring的示例已经很多了，可以参考[SpringSide](https://github.com/springside/springside4/)。
-- Guice比较轻量级，使用方便，全部采用代码进行配置。个人非常喜欢它优雅的设计。
+- There are many Spring examples on the web. e.g. [SpringSide](https://github.com/springside/springside4/)
+- Guice is light weight, easy to use and based on coding configuration. It's so graceful!
 
-# 具体包含哪些模块示例？ #
+# What're the components contained in this project? #
 
 - Google:
 [guice](https://code.google.com/p/google-guice/) /
@@ -34,3 +34,5 @@ RestSeed是一个RESTful风格的完整的示例项目，以[Guice](https://code
 [ModelMapper](http://modelmapper.org/) / [Reflections](https://code.google.com/p/reflections/)
 - Test:
 [JUnit](http://www.junit.org/)
+
+Author: @ConstantineXue at Sina Weibo
