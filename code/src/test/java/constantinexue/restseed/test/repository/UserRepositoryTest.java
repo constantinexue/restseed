@@ -35,7 +35,7 @@ public class UserRepositoryTest extends AbstractTest {
             fail();
         }
         catch (PersistenceException e) {
-            // 这里的e.getCause()很奇怪
+            // TODO: This e.getCause() returns a strange result.
         }
     }
     

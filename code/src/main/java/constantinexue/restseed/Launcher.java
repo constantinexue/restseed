@@ -25,7 +25,7 @@ public class Launcher {
     private static final int HTTP_PORT = 8080;
     private static final int STOP_PORT = 8081;
     
-    // Logger.getLogger获得的是弱引用，如果不保存，设置就没有效果。
+    // Logger.getLogger gets the weak reference. It must be kept here, or the setting is invalid.
     private static java.util.logging.Logger jerseyLogger;
     
     private static Server jettyServer;
@@ -53,11 +53,11 @@ public class Launcher {
     private static void executeStartCommand() {
         System.out.println("Starting ...");
         
-        // 重设jersey的Log输入等级，不需要info，只需要warning。
+        // Resets the log level of jersey, starting from WARNING。
         jerseyLogger = java.util.logging.Logger.getLogger("com.sun.jersey");
         jerseyLogger.setLevel(java.util.logging.Level.WARNING);
         
-        // 读取配置
+        // Loads configurations from files.
         try {
             Configuration.loadLog4j("./conf/log4j.xml");
             Configuration.loadProperties("./conf/application.properties");
@@ -76,7 +76,7 @@ public class Launcher {
             return;
         }
         
-        // 开启终止命令的监控线程。
+        // Starts the stop signal monitor thread.
         try {
             new MonitorThread().start();
         }
@@ -86,7 +86,8 @@ public class Launcher {
         }
         
         System.out.println("Started, the server is running on http://localhost:" + HTTP_PORT);
-        // 如果不join，主线程结束也不会引起程序退出。但这样做最好。
+        // If doesn't "join" here, the end of main thread won't cause program exit.
+        // BUT, we should do.
         try {
             jettyServer.join();
         }
@@ -113,14 +114,15 @@ public class Launcher {
     
     private static Server createJettyServer() {
         Server server = new Server(HTTP_PORT);
-        //设置在JVM退出时关闭Jetty的钩子。
+        // Sets the hook for JVM termination.
         server.setStopAtShutdown(true);
         
-        // REST风格的API不需要session。
+        // The RESTful API doesn't need session support.
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         GuiceServletListener listener = new GuiceServletListener();
         context.addEventListener(listener);
-        // 支持跨域
+        // CORS supporting. http://www.w3.org/TR/cors/
+        // Doesn't support IE. Use JSONP or Nginx proxy to solve this issue.
         context.addFilter(CrossOriginFilter.class, "/*", null);
         context.addFilter(GuiceFilter.class, "/*", null);
         ServletHolder servletHolder = new ServletHolder(DefaultServlet.class);
@@ -131,9 +133,8 @@ public class Launcher {
     }
     
     /**
-     * 用于实现jetty的graceful shutdown。
-     * 占用一个端口，监控stop指令，然后关闭server。
-     * 
+     * Implements a graceful shutdown for jetty.
+     * Occupies a port to listen stop signal, then shutdown server.
      */
     public static class MonitorThread extends Thread {
         
@@ -157,7 +158,7 @@ public class Launcher {
                 accept = socket.accept();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
                 reader.readLine();
-                // 预留10秒钟让正在运行的请求处理结束。
+                // Leaves 10 seconds for cleaning up executing requests.
                 jettyServer.setGracefulShutdown(10000);
                 accept.close();
                 reader.close();
