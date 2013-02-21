@@ -1,52 +1,38 @@
 package constantinexue.restseed.mapper;
 
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.AbstractProvider;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-
-import constantinexue.restseed.model.UserModel;
+import constantinexue.restseed.common.PagedList;
+import constantinexue.restseed.entity.MessageEntity;
+import constantinexue.restseed.entity.UserEntity;
+import constantinexue.restseed.object.MessageObject;
+import constantinexue.restseed.object.PagedObject;
 import constantinexue.restseed.object.UserObject;
 
 public abstract class MapperFactory {
     
-    public static ModelMapper createModelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-//        Configuration config = modelMapper.getConfiguration();
-//        config.setDestinationNameTokenizer(NameTokenizers.CAMEL_CASE);
-//        config.setDestinationNameTransformer(NameTransformers.JAVABEANS_MUTATOR);
-        modelMapper.addMappings(new UserMap());
-        // modelMapper.addConverter(new UserConverter());
+    public static UserObject map(UserEntity entity) {
+        UserObject object = new UserObject();
+        object.id = entity.getId();
+        object.name = entity.getUsername();
         
-        return modelMapper;
+        return object;
     }
     
-    static class UserMap extends PropertyMap<UserModel, UserObject> {
+    public static MessageObject map(MessageEntity entity) {
+        MessageObject object = new MessageObject();
+        object.id = entity.getId();
+        object.text = entity.getText();
+        // object.createdAt = new LocalDateTime(entity.getCreatedAt());
+        object.author = map(entity.getAuthor());
         
-        @Override
-        protected void configure() {
-            map(new UserObject()).id = source.getId();
-        }
-        
+        return object;
     }
     
-    static class UserConverter extends AbstractConverter<UserModel, UserObject> {
-        
-        @Override
-        protected UserObject convert(UserModel source) {
-            UserObject object = new UserObject();
-            object.id = source.getId();
-            
-            return object;
+    public static PagedObject<MessageObject> map(PagedList<MessageEntity> entities) {
+        PagedObject<MessageObject> objects = new PagedObject<MessageObject>(entities.getTotal());
+        for (MessageEntity entity : entities) {
+            MessageObject object = map(entity);
+            objects.append(object);
         }
-        
-    }
-    
-    static class UserProvider extends AbstractProvider<UserObject> {
-        
-        @Override
-        protected UserObject get() {
-            return new UserObject();
-        }
+        return objects;
     }
 }
