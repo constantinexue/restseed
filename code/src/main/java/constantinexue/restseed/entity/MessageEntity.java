@@ -2,9 +2,12 @@ package constantinexue.restseed.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +23,10 @@ public class MessageEntity extends PersistanceEntity {
     
     @Column(name = "created")
     private Date createdAt;
+    
+    @ManyToOne(cascade = { CascadeType.DETACH }, optional = false)
+    @JoinColumn(name = "author")
+    private UserEntity author;
     
     @Override
     public String getId() {
@@ -46,6 +53,15 @@ public class MessageEntity extends PersistanceEntity {
     
     public MessageEntity setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+        return this;
+    }
+    
+    public UserEntity getAuthor() {
+        return author;
+    }
+    
+    public MessageEntity setAuthor(UserEntity author) {
+        this.author = author;
         return this;
     }
     

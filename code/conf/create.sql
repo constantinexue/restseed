@@ -10,5 +10,6 @@ CREATE TABLE message (
     id              CHAR(4)        NOT NULL,
     text            VARCHAR(100)   NOT NULL,
     created         DATETIME       NOT NULL,
+    author          CHAR(4)        NOT NULL,
     PRIMARY KEY (id)
 );

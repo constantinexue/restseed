@@ -1,7 +1,5 @@
 package constantinexue.restseed.test.repository;
 
-import java.util.Date;
-
 import javax.persistence.PersistenceException;
 
 import org.junit.Test;
@@ -10,10 +8,9 @@ import com.google.inject.Inject;
 
 import constantinexue.restseed.entity.UserEntity;
 import constantinexue.restseed.repository.UserRepository;
-import constantinexue.restseed.test.AbstractTest;
 import constantinexue.restseed.util.IDUtils;
 
-public class UserRepositoryTest extends AbstractTest {
+public class UserRepositoryTest extends AbstractRepositoryTest {
     
     @Inject
     private UserRepository userRepository;
@@ -69,17 +66,6 @@ public class UserRepositoryTest extends AbstractTest {
         userRepository.delete(user);
         UserEntity expected = userRepository.fetch(user.getId());
         assertNull(expected);
-    }
-    
-    private static UserEntity createRandomUser() {
-        String id = IDUtils.generate();
-        UserEntity user = new UserEntity();
-        user.setId(id);
-        user.setUsername("user" + id);
-        user.setPassword("Abc123");
-        user.setCreatedAt(new Date());
-        
-        return user;
     }
     
     private static void assertEquals(UserEntity expected, UserEntity actual) {
