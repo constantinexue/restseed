@@ -17,6 +17,7 @@ import com.google.inject.servlet.GuiceFilter;
 
 import constantinexue.restseed.guice.GuiceServletListener;
 import constantinexue.restseed.util.Configuration;
+import constantinexue.restseed.util.LibraryLoader;
 
 public class Launcher {
     
@@ -39,10 +40,10 @@ public class Launcher {
             command = START_COMMAND;
         }
         if (command.equals(START_COMMAND)) {
-            executeStartCommand();
+            start();
         }
         else if (command.equals(STOP_COMMAND)) {
-            executeStopCommand();
+            stop();
         }
         else {
             System.err.println("Unknown command: " + command);
@@ -50,10 +51,10 @@ public class Launcher {
         }
     }
     
-    private static void executeStartCommand() {
+    public static void start() {
         System.out.println("Starting ...");
         
-        // Resets the log level of jersey, starting from WARNING。
+        // Resets the log level of jersey, starting from WARNING.
         jerseyLogger = java.util.logging.Logger.getLogger("com.sun.jersey");
         jerseyLogger.setLevel(java.util.logging.Level.WARNING);
         
@@ -61,6 +62,15 @@ public class Launcher {
         try {
             Configuration.loadLog4j("./conf/log4j.xml");
             Configuration.loadProperties("./conf/application.properties");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        
+        // Loads native libraries from defined folder.
+        try {
+            LibraryLoader.loadAll();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +107,7 @@ public class Launcher {
         }
     }
     
-    private static void executeStopCommand() {
+    public static void stop() {
         System.out.println("Stopping ...");
         try {
             Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), STOP_PORT);
