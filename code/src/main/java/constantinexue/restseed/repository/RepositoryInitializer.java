@@ -32,7 +32,7 @@ public class RepositoryInitializer {
         SQLHelper.executeScript(connectionUrl, "./conf/create.sql");
         
         // 创建一些测试用户
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             UserEntity user = userRepository.create("u" + i, "123");
             for (int j = 0; j < 10; j++) {
                 messageRepository.create(user.getId(), user.getUsername() + " said " + "中文");

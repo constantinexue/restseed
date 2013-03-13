@@ -6,7 +6,7 @@ import java.util.UUID;
 public abstract class IDUtils {
     
     public static final String generate() {
-        return generateShortId();
+        return generateLongId();
     }
     
     public static final String generateLongId(){
@@ -16,7 +16,7 @@ public abstract class IDUtils {
     
     public static final String generateShortId(){
         Random random = new Random(System.currentTimeMillis());
-        int id = random.nextInt(9000) + 1000;
+        int id = random.nextInt(900000) + 100000;
         
         return Integer.toString(id);
     }

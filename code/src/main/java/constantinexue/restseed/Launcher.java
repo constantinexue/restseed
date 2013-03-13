@@ -23,8 +23,8 @@ public class Launcher {
     
     private static final String START_COMMAND = "start";
     private static final String STOP_COMMAND = "stop";
-    private static final int HTTP_PORT = 8080;
-    private static final int STOP_PORT = 8081;
+    private static final int HTTP_PORT = 3990;
+    private static final int STOP_PORT = 3991;
     
     // Logger.getLogger gets the weak reference. It must be kept here, or the setting is invalid.
     private static java.util.logging.Logger jerseyLogger;

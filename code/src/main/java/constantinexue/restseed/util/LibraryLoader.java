@@ -35,6 +35,9 @@ public class LibraryLoader {
             case WIN64:
                 load("sigar/sigar-amd64-winnt.dll");
                 break;
+            case LINUX64:
+                load("sigar/libsigar-amd64-linux.so");
+                break;
             default:
                 break;
         }
