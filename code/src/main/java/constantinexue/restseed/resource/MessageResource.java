@@ -9,7 +9,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import constantinexue.restseed.common.PagedList;
 import constantinexue.restseed.entity.MessageEntity;
@@ -18,7 +17,6 @@ import constantinexue.restseed.object.MessageObject;
 import constantinexue.restseed.object.PagedObject;
 import constantinexue.restseed.repository.MessageRepository;
 
-@Singleton
 @Path("/messages")
 public class MessageResource extends AbstractResource {
     
