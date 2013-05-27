@@ -1,2 +1,0 @@
-DELETE FROM user;
-DELETE FROM message;
