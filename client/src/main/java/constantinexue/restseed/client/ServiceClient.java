@@ -1,9 +1,17 @@
 package constantinexue.restseed.client;
 
+import java.lang.reflect.Type;
+
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -11,8 +19,9 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.representation.Form;
 
 import constantinexue.restseed.common.exception.ServiceException;
-import constantinexue.restseed.common.object.MessageListObject;
+import constantinexue.restseed.common.object.ErrorObject;
 import constantinexue.restseed.common.object.MessageObject;
+import constantinexue.restseed.common.object.PagedObject;
 import constantinexue.restseed.common.object.RootObject;
 import constantinexue.restseed.common.object.UserObject;
 
@@ -22,6 +31,9 @@ public class ServiceClient {
     private Client client;
     private String serviceUrl;
     
+    private static final TypeToken<PagedObject<MessageObject>> MESSAGES_TYPE_TOKEN = new TypeToken<PagedObject<MessageObject>>() {
+    };
+    
     public ServiceClient(String host, int port) {
         this(host, port, null, null);
     }
@@ -29,7 +41,9 @@ public class ServiceClient {
     public ServiceClient(String host, int port,
                          String username, String password) {
         serviceUrl = String.format("http://%s:%s", host, port);
-        gson = new GsonBuilder().create();
+        gson = new GsonBuilder().serializeNulls()
+                                .registerTypeAdapter(RootObject.class, new RootObjectConverter())
+                                .create();
         ClientConfig config = new DefaultClientConfig();
         client = Client.create(config);
     }
@@ -41,21 +55,19 @@ public class ServiceClient {
                                        .create();
         String json = resource.path("/users")
                               .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
-                              .accept(MediaType.APPLICATION_JSON_TYPE)
                               .post(String.class, params);
         return parseObject(UserObject.class, json);
     }
     
-    public MessageListObject retrieveMessages(int skip, int take) {
+    public PagedObject<MessageObject> retrieveMessages(int skip, int take) {
         Form params = new FormBuilder().page(skip, take)
                                        .create();
         WebResource resource = client.resource(serviceUrl);
-        String json = resource.path("/users")
+        String json = resource.path("/messages")
                               .queryParams(params)
-                              .accept(MediaType.APPLICATION_JSON_TYPE)
                               .get(String.class);
         
-        return parseObject(MessageListObject.class, json);
+        return parseObject(MESSAGES_TYPE_TOKEN.getType(), json);
     }
     
     public MessageObject createMessage(String messageText) {
@@ -70,19 +82,18 @@ public class ServiceClient {
         return null;
     }
     
-    @SuppressWarnings("unchecked")
-    private <T> T parseObject(Class<T> clazz, String json) {
-        RootObject<T> root = new RootObject<T>();
-        root = gson.fromJson(json, root.getClass());
+    private <T> T parseObject(Type clazz, String json) {
+        RootObject root = gson.fromJson(json, RootObject.class);
         if (root.getError() == null) {
-            return root.getData();
+            T data = gson.fromJson((String)root.getData(), clazz);
+            return data;
         }
         else {
             throw new ServiceException();
         }
     }
     
-    private class FormBuilder {
+    private static class FormBuilder {
         
         private Form params;
         
@@ -108,5 +119,34 @@ public class ServiceClient {
         public Form create() {
             return params;
         }
+    }
+    
+    private static class RootObjectConverter implements JsonDeserializer<RootObject> {
+        
+        private static final String ERROR_NODE = "error";
+        private static final String DATA_NODE = "data";
+        
+        @Override
+        public RootObject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            RootObject root = new RootObject();
+            if (json.isJsonObject()) {
+                JsonObject jsonObject = json.getAsJsonObject();
+                if (jsonObject.has(ERROR_NODE)) {
+                    ErrorObject error = context.deserialize(jsonObject.get(ERROR_NODE), ErrorObject.class);
+                    root.setError(error);
+                }
+                else {
+                    JsonElement dataNode = jsonObject.get(DATA_NODE);
+                    String data = dataNode.toString();
+                    root.setData(data);
+                }
+                return root;
+            }
+            else {
+                throw new RuntimeException();
+            }
+        }
+        
     }
 }

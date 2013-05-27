@@ -1,12 +1,12 @@
 package constantinexue.restseed.common.object;
 
-public class RootObject<T> implements ValueObject {
+public class RootObject implements ValueObject {
     
     private String version;
     
     private ErrorObject error;
     
-    private T data;
+    private Object data;
     
     public RootObject() {
         version = "3.0";
@@ -20,16 +20,16 @@ public class RootObject<T> implements ValueObject {
         return error;
     }
     
-    public RootObject<T> setError(ErrorObject error) {
+    public RootObject setError(ErrorObject error) {
         this.error = error;
         return this;
     }
     
-    public T getData() {
+    public Object getData() {
         return data;
     }
     
-    public RootObject<T> setData(T data) {
+    public RootObject setData(Object data) {
         this.data = data;
         return this;
     }

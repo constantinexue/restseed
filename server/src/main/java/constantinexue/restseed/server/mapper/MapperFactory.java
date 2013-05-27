@@ -23,8 +23,8 @@ public abstract class MapperFactory {
         MessageObject object = new MessageObject();
         object.setId(entity.getId())
               .setText(entity.getText())
-              .setAuthor(map(entity.getAuthor()))
-              .setCreatedAt(new LocalDateTime(entity.getCreatedAt()));
+              .setAuthor(map(entity.getAuthor()));
+              //.setCreatedAt(new LocalDateTime(entity.getCreatedAt()));
         
         return object;
     }

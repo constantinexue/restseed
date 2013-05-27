@@ -1,4 +1,4 @@
-package constantinexue.restseed.server.util;
+package constantinexue.restseed.common.util;
 
 public abstract class Console {
     

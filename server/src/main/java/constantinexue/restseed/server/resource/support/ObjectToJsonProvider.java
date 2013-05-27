@@ -61,18 +61,18 @@ public class ObjectToJsonProvider implements MessageBodyWriter<ValueObject> {
     public void writeTo(ValueObject t, Class<?> type, Type genericType, Annotation[] annotations,
                         MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
-        RootObject<ValueObject> root = wrapToRootObject(t);
+        RootObject root = wrapToRootObject(t);
         byte[] bytes = getBytes(root);
         entityStream.write(bytes);
     }
     
-    private RootObject<ValueObject> wrapToRootObject(ValueObject object) {
-        RootObject<ValueObject> root;
+    private RootObject wrapToRootObject(ValueObject object) {
+        RootObject root;
         if (object instanceof ErrorObject) {
-            root = new RootObject<ValueObject>().setError((ErrorObject)object);
+            root = new RootObject().setError((ErrorObject)object);
         }
         else {
-            root = new RootObject<ValueObject>().setData(object);
+            root = new RootObject().setData(object);
         }
         
         return root;
