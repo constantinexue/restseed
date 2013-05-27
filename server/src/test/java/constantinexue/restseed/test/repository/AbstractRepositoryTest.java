@@ -2,9 +2,9 @@ package constantinexue.restseed.test.repository;
 
 import java.util.Date;
 
-import constantinexue.restseed.entity.UserEntity;
+import constantinexue.restseed.server.entity.UserEntity;
+import constantinexue.restseed.server.util.IDUtils;
 import constantinexue.restseed.test.AbstractTest;
-import constantinexue.restseed.util.IDUtils;
 
 public abstract class AbstractRepositoryTest extends AbstractTest {
     

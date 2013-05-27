@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import com.google.inject.Inject;
 
-import constantinexue.restseed.entity.UserEntity;
-import constantinexue.restseed.repository.UserRepository;
-import constantinexue.restseed.util.IDUtils;
+import constantinexue.restseed.server.entity.UserEntity;
+import constantinexue.restseed.server.repository.UserRepository;
+import constantinexue.restseed.server.util.IDUtils;
 
 public class UserRepositoryTest extends AbstractRepositoryTest {
     

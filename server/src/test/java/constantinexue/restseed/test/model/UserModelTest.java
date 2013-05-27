@@ -9,9 +9,9 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.inject.Inject;
 
-import constantinexue.restseed.core.ApplicationContext;
-import constantinexue.restseed.model.UserModel;
-import constantinexue.restseed.service.TimeService;
+import constantinexue.restseed.server.core.ApplicationContext;
+import constantinexue.restseed.server.model.UserModel;
+import constantinexue.restseed.server.service.TimeService;
 import constantinexue.restseed.test.AbstractTest;
 
 public class UserModelTest extends AbstractTest {

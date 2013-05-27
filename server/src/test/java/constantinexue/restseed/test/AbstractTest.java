@@ -8,10 +8,10 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
 
-import constantinexue.restseed.guice.GuiceServletModule;
-import constantinexue.restseed.util.Configuration;
-import constantinexue.restseed.util.PropertiesNames;
-import constantinexue.restseed.util.SQLHelper;
+import constantinexue.restseed.server.guice.GuiceServletModule;
+import constantinexue.restseed.server.util.Configuration;
+import constantinexue.restseed.server.util.PropertiesNames;
+import constantinexue.restseed.server.util.SQLHelper;
 
 public abstract class AbstractTest extends Assert {
     
