@@ -1,4 +1,4 @@
-package constantinexue.restseed.server.object;
+package constantinexue.restseed.common.object;
 
 import java.util.ArrayList;
 import java.util.Collection;

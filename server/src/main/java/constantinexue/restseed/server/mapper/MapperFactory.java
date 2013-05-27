@@ -2,12 +2,12 @@ package constantinexue.restseed.server.mapper;
 
 import org.joda.time.LocalDateTime;
 
+import constantinexue.restseed.common.object.MessageObject;
+import constantinexue.restseed.common.object.PagedObject;
+import constantinexue.restseed.common.object.UserObject;
 import constantinexue.restseed.server.common.PagedList;
 import constantinexue.restseed.server.entity.MessageEntity;
 import constantinexue.restseed.server.entity.UserEntity;
-import constantinexue.restseed.server.object.MessageObject;
-import constantinexue.restseed.server.object.PagedObject;
-import constantinexue.restseed.server.object.UserObject;
 
 public abstract class MapperFactory {
     

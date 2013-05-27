@@ -1,4 +1,4 @@
-package constantinexue.restseed.server.object;
+package constantinexue.restseed.common.object;
 
 import org.joda.time.LocalDateTime;
 

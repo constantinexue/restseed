@@ -13,7 +13,7 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import constantinexue.restseed.server.repository.AbstractRepository;
 import constantinexue.restseed.server.repository.RepositoryInitializer;
 import constantinexue.restseed.server.resource.AbstractResource;
-import constantinexue.restseed.server.resource.support.ObjectMapProvider;
+import constantinexue.restseed.server.resource.support.ObjectToJsonProvider;
 import constantinexue.restseed.server.util.Configuration;
 import constantinexue.restseed.server.util.PropertiesNames;
 
@@ -29,7 +29,7 @@ public class GuiceServletModule extends ServletModule {
         Names.bindProperties(binder(), Configuration.getProperties());
         // 把初始化助手类放在第一个初始化，可以避免EntityManager无法注入的问题。
         bind(RepositoryInitializer.class).asEagerSingleton();
-        bind(ObjectMapProvider.class).asEagerSingleton();
+        bind(ObjectToJsonProvider.class).asEagerSingleton();
 
         bindByAbstractClass(AbstractRepository.class);
         bindByAbstractClass(AbstractResource.class);

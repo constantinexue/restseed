@@ -2,6 +2,7 @@ package constantinexue.restseed.server.resource.support;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -25,16 +26,18 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import constantinexue.restseed.server.object.ValueObject;
+import constantinexue.restseed.common.object.ErrorObject;
+import constantinexue.restseed.common.object.RootObject;
+import constantinexue.restseed.common.object.ValueObject;
 
 @Provider
-public class ObjectMapProvider implements MessageBodyWriter<Object> {
+public class ObjectToJsonProvider implements MessageBodyWriter<ValueObject> {
     
     private final static String ENCODING = "UTF-8";
     
     private final Gson gson;
     
-    public ObjectMapProvider() {
+    public ObjectToJsonProvider() {
         gson = createDefaultObjectGson();
     }
     
@@ -49,36 +52,53 @@ public class ObjectMapProvider implements MessageBodyWriter<Object> {
     }
     
     @Override
-    public long getSize(Object t, Class<?> type, Type genericType, Annotation[] annotations,
+    public long getSize(ValueObject t, Class<?> type, Type genericType, Annotation[] annotations,
                         MediaType mediaType) {
         return -1;
     }
     
     @Override
-    public void writeTo(Object t, Class<?> type, Type genericType, Annotation[] annotations,
+    public void writeTo(ValueObject t, Class<?> type, Type genericType, Annotation[] annotations,
                         MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
+        RootObject<ValueObject> root = wrapToRootObject(t);
+        byte[] bytes = getBytes(root);
+        entityStream.write(bytes);
+    }
+    
+    private RootObject<ValueObject> wrapToRootObject(ValueObject object) {
+        RootObject<ValueObject> root;
+        if (object instanceof ErrorObject) {
+            root = new RootObject<ValueObject>().setError((ErrorObject)object);
+        }
+        else {
+            root = new RootObject<ValueObject>().setData(object);
+        }
+        
+        return root;
+    }
+    
+    private byte[] getBytes(ValueObject t) throws UnsupportedEncodingException {
         String json;
         try {
-            json = gson.toJson(t, type);
+            json = gson.toJson(t);
         }
         catch (Exception e) {
             e.printStackTrace();
             json = "";
         }
-        entityStream.write(json.getBytes(ENCODING));
+        return json.getBytes(ENCODING);
     }
     
-    public static Gson createDefaultObjectGson() {
+    private static Gson createDefaultObjectGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(LocalDate.class, new LocalDateTypeConverter())
-               .serializeNulls()
                .setPrettyPrinting();
         
         return builder.create();
     }
     
-    public static class LocalDateTypeConverter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+    private static class LocalDateTypeConverter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
         
         @Override
         public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

@@ -10,11 +10,11 @@ import javax.ws.rs.QueryParam;
 
 import com.google.inject.Inject;
 
+import constantinexue.restseed.common.object.MessageObject;
+import constantinexue.restseed.common.object.PagedObject;
 import constantinexue.restseed.server.common.PagedList;
 import constantinexue.restseed.server.entity.MessageEntity;
 import constantinexue.restseed.server.mapper.MapperFactory;
-import constantinexue.restseed.server.object.MessageObject;
-import constantinexue.restseed.server.object.PagedObject;
 import constantinexue.restseed.server.repository.MessageRepository;
 
 @Path("/messages")

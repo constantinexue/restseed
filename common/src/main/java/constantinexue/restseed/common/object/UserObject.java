@@ -1,4 +1,4 @@
-package constantinexue.restseed.server.object;
+package constantinexue.restseed.common.object;
 
 public class UserObject implements ValueObject {
     
