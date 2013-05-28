@@ -27,12 +27,18 @@ import constantinexue.restseed.common.object.UserObject;
 
 public class ServiceClient {
     
+    private static final Type MESSAGES_TYPE = new TypeToken<PagedObject<MessageObject>>() {
+    }.getType();
+    
+    private static final String ACCESS_KEY_HEAD = "accesskey";
+    private static final String SECURE_KEY_HEAD = "securekey";
+    
     private Gson gson;
     private Client client;
     private String serviceUrl;
     
-    private static final TypeToken<PagedObject<MessageObject>> MESSAGES_TYPE_TOKEN = new TypeToken<PagedObject<MessageObject>>() {
-    };
+    private String accessKey;
+    private String secureKey;
     
     public ServiceClient(String host, int port) {
         this(host, port, null, null);
@@ -46,40 +52,59 @@ public class ServiceClient {
                                 .create();
         ClientConfig config = new DefaultClientConfig();
         client = Client.create(config);
+        accessKey = username;
+        secureKey = password;
     }
     
     public UserObject register(String username, String password) {
-        WebResource resource = client.resource(serviceUrl);
         Form params = new FormBuilder().add("username", username)
                                        .add("password", password)
                                        .create();
-        String json = resource.path("/users")
-                              .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
-                              .post(String.class, params);
+        String json = resource().path("/users")
+                                .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
+                                .post(String.class, params);
         return parseObject(UserObject.class, json);
     }
     
     public PagedObject<MessageObject> retrieveMessages(int skip, int take) {
         Form params = new FormBuilder().page(skip, take)
                                        .create();
-        WebResource resource = client.resource(serviceUrl);
-        String json = resource.path("/messages")
-                              .queryParams(params)
-                              .get(String.class);
+        String json = resource().path("/messages")
+                                .queryParams(params)
+                                .get(String.class);
         
-        return parseObject(MESSAGES_TYPE_TOKEN.getType(), json);
+        return parseObject(MESSAGES_TYPE, json);
     }
     
     public MessageObject createMessage(String messageText) {
-        return null;
+        Form params = new FormBuilder().add("text", messageText)
+                                       .create();
+        String json = resource().path("/messages")
+                                .header(ACCESS_KEY_HEAD, accessKey)
+                                .header(SECURE_KEY_HEAD, secureKey)
+                                .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
+                                .post(String.class, params);
+        return parseObject(MessageObject.class, json);
     }
     
     public MessageObject updateMessage(String messageId, String messageText) {
-        return null;
+        Form params = new FormBuilder().add("text", messageText)
+                                       .create();
+        String json = resource().path("/messages/" + messageId)
+                                .header(ACCESS_KEY_HEAD, accessKey)
+                                .header(SECURE_KEY_HEAD, secureKey)
+                                .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
+                                .put(String.class, params);
+        return parseObject(MessageObject.class, json);
     }
     
     public MessageObject deleteMessage(String messageId) {
-        return null;
+        String json = resource().path("/messages/" + messageId)
+                                .header(ACCESS_KEY_HEAD, accessKey)
+                                .header(SECURE_KEY_HEAD, secureKey)
+                                .delete(String.class);
+        
+        return parseObject(MessageObject.class, json);
     }
     
     private <T> T parseObject(Type clazz, String json) {
@@ -91,6 +116,10 @@ public class ServiceClient {
         else {
             throw new ServiceException();
         }
+    }
+    
+    private WebResource resource() {
+        return client.resource(serviceUrl);
     }
     
     private static class FormBuilder {

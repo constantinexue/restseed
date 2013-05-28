@@ -11,9 +11,9 @@ import constantinexue.restseed.common.object.ErrorObject;
 
 @Singleton
 @Provider
-public class ApplicationExceptionMapper implements ExceptionMapper<ServiceException> {
+public class ServiceExceptionMapper implements ExceptionMapper<ServiceException> {
     
-    public ApplicationExceptionMapper() {
+    public ServiceExceptionMapper() {
     }
     
     @Override
