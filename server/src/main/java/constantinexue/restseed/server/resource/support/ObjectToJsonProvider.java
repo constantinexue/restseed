@@ -14,21 +14,15 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import constantinexue.restseed.common.object.ErrorObject;
 import constantinexue.restseed.common.object.RootObject;
 import constantinexue.restseed.common.object.ValueObject;
+import constantinexue.restseed.common.util.LocalDateTimeConverter;
 
 @Provider
 public class ObjectToJsonProvider implements MessageBodyWriter<ValueObject> {
@@ -92,24 +86,9 @@ public class ObjectToJsonProvider implements MessageBodyWriter<ValueObject> {
     
     private static Gson createDefaultObjectGson() {
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(LocalDate.class, new LocalDateTypeConverter())
+        builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter())
                .setPrettyPrinting();
         
         return builder.create();
-    }
-    
-    private static class LocalDateTypeConverter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
-        
-        @Override
-        public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            return LocalDate.parse(json.getAsString());
-        }
-        
-        @Override
-        public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src.toString());
-        }
-        
     }
 }

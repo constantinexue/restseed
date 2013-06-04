@@ -4,6 +4,8 @@ import java.lang.reflect.Type;
 
 import javax.ws.rs.core.MediaType;
 
+import org.joda.time.LocalDateTime;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -24,6 +26,7 @@ import constantinexue.restseed.common.object.MessageObject;
 import constantinexue.restseed.common.object.PagedObject;
 import constantinexue.restseed.common.object.RootObject;
 import constantinexue.restseed.common.object.UserObject;
+import constantinexue.restseed.common.util.LocalDateTimeConverter;
 
 public class ServiceClient {
     
@@ -48,6 +51,7 @@ public class ServiceClient {
                          String username, String password) {
         serviceUrl = String.format("http://%s:%s", host, port);
         gson = new GsonBuilder().serializeNulls()
+                                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter())
                                 .registerTypeAdapter(RootObject.class, new RootObjectConverter())
                                 .create();
         ClientConfig config = new DefaultClientConfig();
