@@ -11,14 +11,17 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class UserEntity extends PersistanceEntity {
     
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    
     @Id
     @Column(name = "id")
     private String id;
     
-    @Column(name = "username")
-    private String name;
+    @Column(name = USERNAME)
+    private String username;
     
-    @Column(name = "password")
+    @Column(name = PASSWORD)
     private String password;
     
     @Column(name = "created")
@@ -35,11 +38,11 @@ public class UserEntity extends PersistanceEntity {
     }
     
     public String getUsername() {
-        return name;
+        return username;
     }
     
     public UserEntity setUsername(String name) {
-        this.name = name;
+        this.username = name;
         return this;
     }
     

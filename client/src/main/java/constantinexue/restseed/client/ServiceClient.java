@@ -4,24 +4,21 @@ import java.lang.reflect.Type;
 
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDateTime;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.representation.Form;
 
+import constantinexue.restseed.client.support.RootObjectConverter;
 import constantinexue.restseed.common.exception.ServiceException;
-import constantinexue.restseed.common.object.ErrorObject;
 import constantinexue.restseed.common.object.MessageObject;
 import constantinexue.restseed.common.object.PagedObject;
 import constantinexue.restseed.common.object.RootObject;
@@ -33,15 +30,9 @@ public class ServiceClient {
     private static final Type MESSAGES_TYPE = new TypeToken<PagedObject<MessageObject>>() {
     }.getType();
     
-    private static final String ACCESS_KEY_HEAD = "accesskey";
-    private static final String SECURE_KEY_HEAD = "securekey";
-    
     private Gson gson;
     private Client client;
     private String serviceUrl;
-    
-    private String accessKey;
-    private String secureKey;
     
     public ServiceClient(String host, int port) {
         this(host, port, null, null);
@@ -56,8 +47,12 @@ public class ServiceClient {
                                 .create();
         ClientConfig config = new DefaultClientConfig();
         client = Client.create(config);
-        accessKey = username;
-        secureKey = password;
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            // No Authentication
+        }
+        else {
+            client.addFilter(new HTTPBasicAuthFilter(username, password));
+        }
     }
     
     public UserObject register(String username, String password) {
@@ -84,8 +79,6 @@ public class ServiceClient {
         Form params = new FormBuilder().add("text", messageText)
                                        .create();
         String json = resource().path("/messages")
-                                .header(ACCESS_KEY_HEAD, accessKey)
-                                .header(SECURE_KEY_HEAD, secureKey)
                                 .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
                                 .post(String.class, params);
         return parseObject(MessageObject.class, json);
@@ -95,8 +88,6 @@ public class ServiceClient {
         Form params = new FormBuilder().add("text", messageText)
                                        .create();
         String json = resource().path("/messages/" + messageId)
-                                .header(ACCESS_KEY_HEAD, accessKey)
-                                .header(SECURE_KEY_HEAD, secureKey)
                                 .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
                                 .put(String.class, params);
         return parseObject(MessageObject.class, json);
@@ -104,8 +95,6 @@ public class ServiceClient {
     
     public MessageObject deleteMessage(String messageId) {
         String json = resource().path("/messages/" + messageId)
-                                .header(ACCESS_KEY_HEAD, accessKey)
-                                .header(SECURE_KEY_HEAD, secureKey)
                                 .delete(String.class);
         
         return parseObject(MessageObject.class, json);
@@ -152,34 +141,5 @@ public class ServiceClient {
         public Form create() {
             return params;
         }
-    }
-    
-    private static class RootObjectConverter implements JsonDeserializer<RootObject> {
-        
-        private static final String ERROR_NODE = "error";
-        private static final String DATA_NODE = "data";
-        
-        @Override
-        public RootObject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            RootObject root = new RootObject();
-            if (json.isJsonObject()) {
-                JsonObject jsonObject = json.getAsJsonObject();
-                if (jsonObject.has(ERROR_NODE)) {
-                    ErrorObject error = context.deserialize(jsonObject.get(ERROR_NODE), ErrorObject.class);
-                    root.setError(error);
-                }
-                else {
-                    JsonElement dataNode = jsonObject.get(DATA_NODE);
-                    String data = dataNode.toString();
-                    root.setData(data);
-                }
-                return root;
-            }
-            else {
-                throw new RuntimeException();
-            }
-        }
-        
     }
 }

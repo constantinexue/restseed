@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.google.inject.Singleton;
@@ -42,5 +43,17 @@ public class UserRepository extends AbstractRepository<UserEntity> {
         query.select(root);
         
         return fetchResultList(query, 0, 100);
+    }
+    
+    @Transactional()
+    public UserEntity find(String username, String password){
+        CriteriaBuilder builder = entityManager().getCriteriaBuilder();
+        CriteriaQuery<UserEntity> query = builder.createQuery(UserEntity.class);
+        Root<UserEntity> root = query.from(UserEntity.class);
+        Predicate usernamePredicate = builder.equal(root.get(UserEntity.USERNAME), username);
+        Predicate passwordPredicate = builder.equal(root.get(UserEntity.PASSWORD), password);
+        query.select(root).where(usernamePredicate, passwordPredicate);
+        
+        return fetchSingleResult(query);
     }
 }

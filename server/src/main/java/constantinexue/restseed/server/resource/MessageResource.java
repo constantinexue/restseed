@@ -3,6 +3,7 @@ package constantinexue.restseed.server.resource;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -32,7 +33,7 @@ public class MessageResource extends AbstractResource {
     }
     
     @POST
-    public MessageObject create(@FormParam("author") String authorId,
+    public MessageObject create(@HeaderParam("author") String authorId,
                                 @FormParam("text") String messageText) {
         MessageEntity message = messageRepository.create(authorId, messageText);
         
@@ -41,8 +42,12 @@ public class MessageResource extends AbstractResource {
     
     @DELETE
     @Path("/{id}")
-    public String delete(@PathParam("id") String messageId) {
-        messageRepository.delete(messageId);
+    public String delete(@HeaderParam("author") String authorId,
+                         @PathParam("id") String messageId) {
+        MessageEntity message = messageRepository.fetch(messageId);
+        if (message.getAuthor().getId().equals(authorId)) {
+            messageRepository.delete(messageId);
+        }
         
         return messageId;
     }

@@ -25,9 +25,13 @@ public class UserTest extends Assert {
     @Test
     public void retrieveMessages() {
         ServiceClient service = new ServiceClient("localhost", 3990);
+        String username = createRandomUsername();
+        service.register(username, "Abc123");
+        service = new ServiceClient("localhost", 3990, username, "Abc123");
+        service.createMessage("Hello world");
         PagedObject<MessageObject> messages = service.retrieveMessages(0, 10);
         
-        for (MessageObject message:messages) {
+        for (MessageObject message : messages) {
             Console.out("%s", message.getText());
         }
     }
