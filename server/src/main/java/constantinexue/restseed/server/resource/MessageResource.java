@@ -15,7 +15,7 @@ import constantinexue.restseed.common.object.MessageObject;
 import constantinexue.restseed.common.object.PagedObject;
 import constantinexue.restseed.server.common.PagedList;
 import constantinexue.restseed.server.entity.MessageEntity;
-import constantinexue.restseed.server.mapper.MapperFactory;
+import constantinexue.restseed.server.mapper.ObjectMapper;
 import constantinexue.restseed.server.repository.MessageRepository;
 
 @Path("/messages")
@@ -29,7 +29,7 @@ public class MessageResource extends AbstractResource {
                                                @QueryParam("take") Integer take) {
         PagedList<MessageEntity> messages = messageRepository.fetchAll(skip, take);
         
-        return MapperFactory.map(messages);
+        return ObjectMapper.map(messages);
     }
     
     @POST
@@ -37,7 +37,7 @@ public class MessageResource extends AbstractResource {
                                 @FormParam("text") String messageText) {
         MessageEntity message = messageRepository.create(authorId, messageText);
         
-        return MapperFactory.map(message);
+        return ObjectMapper.map(message);
     }
     
     @DELETE

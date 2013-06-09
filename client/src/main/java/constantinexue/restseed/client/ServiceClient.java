@@ -18,7 +18,8 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.representation.Form;
 
 import constantinexue.restseed.client.support.RootObjectConverter;
-import constantinexue.restseed.common.exception.ServiceException;
+import constantinexue.restseed.common.exception.ServiceExceptionFactory;
+import constantinexue.restseed.common.object.ErrorObject;
 import constantinexue.restseed.common.object.MessageObject;
 import constantinexue.restseed.common.object.PagedObject;
 import constantinexue.restseed.common.object.RootObject;
@@ -65,6 +66,18 @@ public class ServiceClient {
         return parseObject(UserObject.class, json);
     }
     
+    public UserObject fetchUserById(String userId) {
+        return null;
+    }
+    
+    public UserObject fetchUserByUsername(String username) {
+        String json = resource().path("/users")
+                                .queryParam("username", username)
+                                .get(String.class);
+        
+        return parseObject(UserObject.class, json);
+    }
+    
     public PagedObject<MessageObject> retrieveMessages(int skip, int take) {
         Form params = new FormBuilder().page(skip, take)
                                        .create();
@@ -102,12 +115,13 @@ public class ServiceClient {
     
     private <T> T parseObject(Type clazz, String json) {
         RootObject root = gson.fromJson(json, RootObject.class);
-        if (root.getError() == null) {
+        ErrorObject error = root.getError();
+        if (error == null) {
             T data = gson.fromJson((String)root.getData(), clazz);
             return data;
         }
         else {
-            throw new ServiceException();
+            throw ServiceExceptionFactory.create(error.getCode());
         }
     }
     

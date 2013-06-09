@@ -9,7 +9,7 @@ import constantinexue.restseed.server.common.PagedList;
 import constantinexue.restseed.server.entity.MessageEntity;
 import constantinexue.restseed.server.entity.UserEntity;
 
-public abstract class MapperFactory {
+public abstract class ObjectMapper {
     
     public static UserObject map(UserEntity entity) {
         UserObject object = new UserObject();

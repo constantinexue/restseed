@@ -46,7 +46,7 @@ public class HTTPBasicAuthFilter implements ContainerRequestFilter {
         String username = authPair[0];
         String password = authPair[1];
         
-        UserEntity userEntity = userRepository.find(username, password);
+        UserEntity userEntity = userRepository.fetch(username, password);
         
         return userEntity;
     }

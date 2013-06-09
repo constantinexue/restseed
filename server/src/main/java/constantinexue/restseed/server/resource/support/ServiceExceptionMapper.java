@@ -18,11 +18,12 @@ public class ServiceExceptionMapper implements ExceptionMapper<ServiceException>
     
     @Override
     public Response toResponse(ServiceException exception) {
-        ErrorObject error = new ErrorObject();
-
-        error.setCode(500)
-             .setMessage("Some unknown error happened in server.");
+        ErrorObject error = new ErrorObject(exception.getErrorCode(), exception.getClass().getSimpleName());
         
-        return Response.ok(error).build();
+        int statusCode = error.getCode() / 1000;
+        
+        return Response.status(200)
+                       .entity(error)
+                       .build();
     }
 }

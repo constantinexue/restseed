@@ -46,7 +46,18 @@ public class UserRepository extends AbstractRepository<UserEntity> {
     }
     
     @Transactional()
-    public UserEntity find(String username, String password){
+    public UserEntity fetchByUsername(String username) {
+        CriteriaBuilder builder = entityManager().getCriteriaBuilder();
+        CriteriaQuery<UserEntity> query = builder.createQuery(UserEntity.class);
+        Root<UserEntity> root = query.from(UserEntity.class);
+        Predicate usernamePredicate = builder.equal(root.get(UserEntity.USERNAME), username);
+        query.select(root).where(usernamePredicate);
+        
+        return fetchSingleResult(query);
+    }
+    
+    @Transactional()
+    public UserEntity fetch(String username, String password) {
         CriteriaBuilder builder = entityManager().getCriteriaBuilder();
         CriteriaQuery<UserEntity> query = builder.createQuery(UserEntity.class);
         Root<UserEntity> root = query.from(UserEntity.class);
