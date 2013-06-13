@@ -1,6 +1,6 @@
 # What's RestSeed? #
 
-RestSeed is a RESTful complete seed project based on [Guice](https://code.google.com/p/google-guice/), [Jetty](http://www.eclipse.org/jetty/), [Jersey](http://jersey.java.net/) and JPA.
+RestSeed is a [RESTful](https://jax-rs-spec.java.net/) complete seed project based on [Guice](https://code.google.com/p/google-guice/), [Jetty](http://www.eclipse.org/jetty/), [Jersey](http://jersey.java.net/) and JPA.
 It includes HTTP layer, domain models, entities and repositories, and mappers.
 
 # What's the reason I chose Guice, not Spring? #

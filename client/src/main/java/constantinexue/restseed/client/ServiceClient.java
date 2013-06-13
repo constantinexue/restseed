@@ -18,6 +18,7 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.representation.Form;
 
 import constantinexue.restseed.client.support.RootObjectConverter;
+import constantinexue.restseed.client.util.FormBuilder;
 import constantinexue.restseed.common.exception.ServiceExceptionFactory;
 import constantinexue.restseed.common.object.ErrorObject;
 import constantinexue.restseed.common.object.MessageObject;
@@ -129,31 +130,4 @@ public class ServiceClient {
         return client.resource(serviceUrl);
     }
     
-    private static class FormBuilder {
-        
-        private Form params;
-        
-        public FormBuilder() {
-            params = new Form();
-        }
-        
-        public FormBuilder add(String name, String value) {
-            params.add(name, value);
-            return this;
-        }
-        
-        public FormBuilder add(String name, int value) {
-            params.add(name, value);
-            return this;
-        }
-        
-        public FormBuilder page(int skip, int take) {
-            add("skip", skip).add("take", take);
-            return this;
-        }
-        
-        public Form create() {
-            return params;
-        }
-    }
 }

@@ -21,8 +21,10 @@ public class ServiceExceptionMapper implements ExceptionMapper<ServiceException>
         ErrorObject error = new ErrorObject(exception.getErrorCode(), exception.getClass().getSimpleName());
         
         int statusCode = error.getCode() / 1000;
+        // Cannot return 404 error directly, because it will cause client throw exceptions before resolving json.
+        statusCode = 200;
         
-        return Response.status(200)
+        return Response.status(statusCode)
                        .entity(error)
                        .build();
     }
