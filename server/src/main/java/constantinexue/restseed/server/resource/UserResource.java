@@ -3,6 +3,7 @@ package constantinexue.restseed.server.resource;
 import java.util.Date;
 
 import javax.persistence.NoResultException;
+import javax.persistence.RollbackException;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 
+import constantinexue.restseed.common.exception.UserAlreadyExistException;
 import constantinexue.restseed.common.exception.UserNotExistException;
 import constantinexue.restseed.common.object.UserObject;
 import constantinexue.restseed.server.entity.UserEntity;
@@ -64,8 +66,12 @@ public class UserResource extends AbstractResource {
             .setUsername(username)
             .setPassword(password)
             .setCreatedAt(new Date());
-        
-        userRepository.create(user);
+        try {
+            userRepository.create(user);
+        }
+        catch (RollbackException e) {
+            throw new UserAlreadyExistException();
+        }
         
         return ObjectMapper.map(user);
     }

@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import constantinexue.restseed.client.ServiceClient;
+import constantinexue.restseed.common.exception.UserAlreadyExistException;
 import constantinexue.restseed.common.exception.UserNotExistException;
 import constantinexue.restseed.common.object.MessageObject;
 import constantinexue.restseed.common.object.PagedObject;
@@ -27,6 +28,13 @@ public class UserTest extends Assert {
             fail();
         }
         catch (UserNotExistException e) {
+        }
+        
+        try {
+            service.register(username, "Abc123");
+            fail();
+        }
+        catch (UserAlreadyExistException e) {
         }
     }
     
