@@ -89,6 +89,17 @@ public class ServiceClient {
         return parseObject(MESSAGES_TYPE, json);
     }
     
+    public PagedObject<MessageObject> retrieveMessagesByAuthor(String authorId, int skip, int take) {
+        Form params = new FormBuilder().add("author", authorId)
+                                       .page(skip, take)
+                                       .create();
+        String json = resource().path("/messages")
+                                .queryParams(params)
+                                .get(String.class);
+        
+        return parseObject(MESSAGES_TYPE, json);
+    }
+    
     public MessageObject createMessage(String messageText) {
         Form params = new FormBuilder().add("text", messageText)
                                        .create();

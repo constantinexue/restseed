@@ -35,4 +35,11 @@ It includes HTTP layer, domain models, entities and repositories, and mappers.
 - Test:
 [JUnit](http://www.junit.org/)
 
+# Projects
+
+- parent: basic maven definition 
+- common: shared object for RESTful API definition
+- server: RESTful API implementation
+- client: RESTful client implmentation
+
 Author: @ConstantineXue at Sina Weibo
