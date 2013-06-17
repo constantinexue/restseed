@@ -42,13 +42,16 @@ public class MessageResource extends AbstractResource {
     
     @DELETE
     @Path("/{id}")
-    public String delete(@HeaderParam("author") String authorId,
-                         @PathParam("id") String messageId) {
+    public MessageObject delete(@HeaderParam("author") String authorId,
+                                @PathParam("id") String messageId) {
         MessageEntity message = messageRepository.fetch(messageId);
         if (message.getAuthor().getId().equals(authorId)) {
             messageRepository.delete(messageId);
         }
+        else {
+            
+        }
         
-        return messageId;
+        return ObjectMapper.map(message);
     }
 }

@@ -43,7 +43,7 @@ public class UnitTest extends Assert {
     public void testMessages() {
         ServiceClient service = createServiceClient();
         String username = createRandomUsername();
-        UserObject author = service.register(username, "Abc123");
+        UserObject author = service.register(username, DEFAULT_PASSWORD);
         service = createServiceClient(username);
         MessageObject expected = service.createMessage("Hello world");
         PagedObject<MessageObject> messages = service.retrieveMessagesByAuthor(author.getId(), 0, 10);
@@ -51,6 +51,10 @@ public class UnitTest extends Assert {
         assertEquals(1, messages.getTotal());
         MessageObject actual = messages.get(0);
         
+        assertEquals(expected, actual);
+        
+        actual = service.deleteMessage(actual.getId());
+
         assertEquals(expected, actual);
     }
     
@@ -68,7 +72,7 @@ public class UnitTest extends Assert {
         return service;
     }
     
-    protected static void assertEquals(MessageObject expected, MessageObject actual){
+    protected static void assertEquals(MessageObject expected, MessageObject actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getText(), actual.getText());
         assertEquals(expected.getCreatedAt().toString(), actual.getCreatedAt().toString());
