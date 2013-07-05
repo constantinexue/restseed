@@ -24,12 +24,14 @@ public class MessageResource extends AbstractResource {
     @Inject
     private MessageRepository messageRepository;
     
+    @SuppressWarnings("unchecked")
     @GET
     public PagedObject<MessageObject> fetchAll(@QueryParam("skip") Integer skip,
                                                @QueryParam("take") Integer take) {
         PagedList<MessageEntity> messages = messageRepository.fetchAll(skip, take);
         
-        return ObjectMapper.map(messages);
+        //return ObjectMapper.map(messages);
+        return (PagedObject<MessageObject>)map(messages, PagedObject.class);
     }
     
     @POST

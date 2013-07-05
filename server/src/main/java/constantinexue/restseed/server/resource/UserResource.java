@@ -73,6 +73,8 @@ public class UserResource extends AbstractResource {
             throw new UserAlreadyExistException();
         }
         
-        return ObjectMapper.map(user);
+        //return ObjectMapper.map(user);
+        
+        return map(user, UserObject.class);
     }
 }

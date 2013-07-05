@@ -17,6 +17,7 @@ import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
 
+import constantinexue.restseed.server.mapper.MapperService;
 import constantinexue.restseed.server.repository.AbstractRepository;
 import constantinexue.restseed.server.repository.RepositoryInitializer;
 import constantinexue.restseed.server.resource.AbstractResource;
@@ -39,7 +40,8 @@ public class GuiceServletModule extends ServletModule {
         // 把初始化助手类放在第一个初始化，可以避免EntityManager无法注入的问题。
         bindAsEagerSingleton(RepositoryInitializer.class,
                              ObjectToJsonProvider.class,
-                             ServiceExceptionMapper.class);
+                             ServiceExceptionMapper.class,
+                             MapperService.class);
         
         bindByAbstractClass(AbstractRepository.class);
         bindByAbstractClass(AbstractResource.class);
