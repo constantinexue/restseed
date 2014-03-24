@@ -1,4 +1,5 @@
-package constantinexue.restseed.common.util;
+package com.constx;
+
 
 public abstract class Console {
     
@@ -7,7 +8,7 @@ public abstract class Console {
     }
     
     public static void err(Exception e) {
-        System.err.println(String.format("Unknown exception: %s", e));
+        System.err.println(String.format("Exception: %s", e));
     }
     
     public static void err(StringBuilder sb) {

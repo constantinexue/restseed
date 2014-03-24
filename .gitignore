@@ -20,3 +20,6 @@ npm-debug.log
 
 .idea
 *.iml
+
+build
+.gradle
