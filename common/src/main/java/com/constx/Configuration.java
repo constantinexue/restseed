@@ -38,13 +38,13 @@ public class Configuration {
             throw new FileNotFoundException(propertiesFilePath);
         }
         Properties properties = new Properties();
-        InputStream is = null;
+        InputStream in = null;
         try {
-            is = FileUtils.openInputStream(configFile);
-            properties.load(is);
+            in = FileUtils.openInputStream(configFile);
+            properties.load(in);
         }
         finally {
-            IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(in);
         }
         return new Configuration(properties);
     }
