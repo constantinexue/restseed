@@ -1,1 +1,1 @@
-include "common", "desktop"
+include "common", "desktop", "server"
