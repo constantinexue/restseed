@@ -42,6 +42,7 @@ project(":server") {
         }
         compile "com.google.inject.extensions:guice-servlet:3.0"
         compile "com.google.inject.extensions:guice-persist:3.0"
-        compile "org.eclipse.jetty.aggregate:jetty-all-server:8.1.9.v20130131"
+        compile "org.eclipse.jetty.aggregate:jetty-all-server:8.1.14.v20131031"
+        compile "org.hibernate:hibernate-entitymanager:4.3.4.Final"
     }
 }
